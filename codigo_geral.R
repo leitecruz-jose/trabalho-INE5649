@@ -5,7 +5,7 @@ if (length(novos) > 0) install.packages(novos)
 invisible(lapply(pacotes, library, character.only = TRUE))
 
 # parametros
-CIDADE     <- "Fortaleza"
+CIDADE     <- "Manaus" # , "Curitiba", "Fortaleza", "Manaus", "Sao_Paulo"
 ARQUIVO    <- paste("dados_", tolower(CIDADE),".xlsx", sep = "")  # arquivo baixado do Kaggle
 H          <- 12                       # horizonte do teste (últimos 12 meses)
 PASTA_FIG  <- paste("figuras_", tolower(CIDADE), sep = "")# onde as figuras serão salvas
@@ -171,7 +171,6 @@ p9 <- ggplot(tab, aes(reorder(Modelo, -EAM), EAM, fill = Modelo == melhor)) +
 print(p9); salvar(p9, "9_ranking_eam.png", w = 9, h = 6)
 
 # 6. PREVISÃO FINAL
-# Previsão final com o melhor modelo
 fc_final <- modelos[[melhor]](serie_c, H)
 
 p10 <- autoplot(fc_final, include = 10 * 12) +
