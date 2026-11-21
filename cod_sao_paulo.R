@@ -24,6 +24,8 @@ teste <- as.numeric(tail(serie, h))
 
 # Ajustar modelos e prever
 previsoes <- cbind(
+  SES = ses(treino, h = h)$mean, #só adicionei por que o professor falou pra usar todos os modelos que ele passou
+  HOLT = holt(treino, h = h)$mean,
   HW_Aditivo = hw(treino, seasonal = "additive", h = h)$mean,
   HW_Multiplicativo = hw(treino, seasonal = "multiplicative", h = h)$mean,
   ETS = forecast(ets(treino), h = h)$mean,
