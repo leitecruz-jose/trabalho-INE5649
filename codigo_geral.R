@@ -17,10 +17,14 @@ salvar <- function(p, nome, w = 9, h = 5)
 
 
 dados <- read_excel(ARQUIVO)
+ANO_FINAL <- 2019   # último ano do arquivo
+yy     <- as.integer(sub(".*/", "", dados$Data))
+virada <- cumsum(c(0, diff(yy) < 0))            # +1 a cada virada de século (99 -> 00)
+ano    <- (ANO_FINAL %/% 100) * 100 + yy + 100 * (virada - max(virada))
 mes   <- match(substr(dados$Data, 1, 3), meses_pt)
-ano   <- as.integer(sub(".*/", "", dados$Data))
-ano   <- ifelse(ano <= 26, 2000 + ano, 1900 + ano)
 chave <- ano * 12 + mes - 1
+stopifnot(!anyDuplicated(chave))                # para o script se ainda houver datas repetidas
+
 idx   <- seq(min(chave), max(chave))
 serie <- ts(dados$Temperatura[match(idx, chave)],
             start = c(min(chave) %/% 12, min(chave) %% 12 + 1), frequency = 12)
