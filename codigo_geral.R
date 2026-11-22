@@ -5,7 +5,7 @@ if (length(novos) > 0) install.packages(novos)
 invisible(lapply(pacotes, library, character.only = TRUE))
 
 # parametros
-CIDADE     <- "Manaus" # , "Curitiba", "Fortaleza", "Manaus", "Sao_Paulo"
+CIDADE     <- "Sao_Paulo" # , "Curitiba", "Fortaleza", "Manaus", "Sao_Paulo"
 ARQUIVO    <- paste("dados_", tolower(CIDADE),".xlsx", sep = "")  # arquivo baixado do Kaggle
 H          <- 12                       # horizonte do teste (últimos 12 meses)
 PASTA_FIG  <- paste("figuras_", tolower(CIDADE), sep = "")# onde as figuras serão salvas
@@ -17,16 +17,25 @@ salvar <- function(p, nome, w = 9, h = 5)
 
 
 dados <- read_excel(ARQUIVO)
-ANO_FINAL <- 2019   # último ano do arquivo
-yy     <- as.integer(sub(".*/", "", dados$Data))
-virada <- cumsum(c(0, diff(yy) < 0))            # +1 a cada virada de século (99 -> 00)
-ano    <- (ANO_FINAL %/% 100) * 100 + yy + 100 * (virada - max(virada))
-mes   <- match(substr(dados$Data, 1, 3), meses_pt)
-chave <- ano * 12 + mes - 1
-stopifnot(!anyDuplicated(chave))                # para o script se ainda houver datas repetidas
+# no bloco de parâmetros
+ANO_INICIO <- 1961    # início comum a todas as cidades
+ANO_FINAL  <- 2019    # último ano dos arquivos
+
+# leitura
+dados <- read_excel(ARQUIVO)
+
+mes <- match(substr(dados$Data, 1, 3), meses_pt)
+yy  <- as.integer(sub(".*/", "", dados$Data))
+virada <- cumsum(c(0, diff(yy) < 0))                       # +1 a cada virada de século (99 -> 00)
+ano <- (ANO_FINAL %/% 100) * 100 + yy + 100 * (virada - max(virada))
+
+# mantém apenas de ANO_INICIO em diante
+manter <- ano >= ANO_INICIO
+chave  <- ano[manter] * 12 + mes[manter] - 1
+stopifnot(!anyDuplicated(chave))                           # para se houver datas repetidas
 
 idx   <- seq(min(chave), max(chave))
-serie <- ts(dados$Temperatura[match(idx, chave)],
+serie <- ts(dados$Temperatura[manter][match(idx, chave)],
             start = c(min(chave) %/% 12, min(chave) %% 12 + 1), frequency = 12)
 
 serie_c <- na.interp(serie)
