@@ -1,5 +1,5 @@
 # pacotes
-pacotes <- c("tidyverse", "forecast", "lubridate", "zoo", "gridExtra")
+pacotes <- c("tidyverse", "forecast", "lubridate", "zoo", "gridExtra", "readxl")
 novos <- pacotes[!pacotes %in% rownames(installed.packages())]
 if (length(novos) > 0) install.packages(novos)
 invisible(lapply(pacotes, library, character.only = TRUE))
