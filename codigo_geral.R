@@ -143,11 +143,10 @@ names(prev) <- names(modelos)
 
 metricas <- function(real, p) c(EAM  = mean(abs(real - p)),
                                 RMSE = sqrt(mean((real - p)^2)),
-                                MAPE = mean(abs((real - p) / real)) * 100,
-                                Vies = mean(real - p))
+                                MAPE = mean(abs((real - p) / real)) * 100)
 tab <- as.data.frame(t(sapply(prev, function(p) metricas(teste_num, p))))
 tab$Modelo <- rownames(tab)
-tab <- tab[order(tab$EAM), c("Modelo", "EAM", "RMSE", "MAPE", "Vies")]
+tab <- tab[order(tab$EAM), c("Modelo", "EAM", "RMSE", "MAPE")]
 rownames(tab) <- NULL
 print(tab, digits = 3)
 melhor <- tab$Modelo[1]
