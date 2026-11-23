@@ -65,43 +65,6 @@ Além das métricas pontuais, são conduzidas análises de resíduos (`checkresi
 
 ---
 
-## 🚀 Como Executar
-
-### 1. Pré-requisitos
-Certifique-se de ter o **R** (versão $\ge 4.0$) instalado com os seguintes pacotes:
-
-```r
-install.packages(c(
-  "readxl",
-  "zoo",
-  "forecast",
-  "tidyverse",
-  "lubridate",
-  "gridExtra"
-))
-```
-
-### 2. Executando os Scripts
-
-* **Para rodar a análise simplificada de Curitiba:**
-  ```bash
-  Rscript cod_curitiba.R
-  ```
-
-* **Para rodar a análise simplificada de São Paulo:**
-  ```bash
-  Rscript cod_sao_paulo.R
-  ```
-
-* **Para executar o pipeline completo (com geração de gráficos e figuras):**  
-  Abra `codigo_geral.R` e ajuste a variável `CIDADE` (linha 8) para a cidade desejada (`"Curitiba"`, `"Sao_Paulo"`, `"Fortaleza"` ou `"Manaus"`):
-  ```bash
-  Rscript codigo_geral.R
-  ```
-  Os gráficos gerados serão salvos automaticamente na pasta `figuras_<cidade>/`.
-
----
-
 ## 📄 Licença
 
 Este projeto está sob a licença definida no arquivo [LICENSE](LICENSE).
